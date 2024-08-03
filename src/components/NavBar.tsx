@@ -4,9 +4,11 @@ import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import UserButton from "./UserButton";
 import { Button } from "./ui/button";
+import { auth } from "@/auth";
 
 export default function NavBar() {
   const session = useSession();
+  // const session = await auth()
   const user = session.data?.user;
 
   return (
@@ -25,3 +27,15 @@ export default function NavBar() {
 function SignInButton() {
   return <Button onClick={() => signIn()}>Sign in</Button>;
 }
+
+// function SignInButton() {
+//   return (
+//     <form action={async () => {
+//       'use server'
+//       await signIn()
+//     }}>
+//       <Button type="submit">Sign in</Button>
+
+//     </form>
+//   )
+// }

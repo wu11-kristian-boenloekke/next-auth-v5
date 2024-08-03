@@ -4,6 +4,8 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// All the models are copied from schema example https://authjs.dev/getting-started/adapters/prisma under PostgreSQL
+
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
@@ -14,7 +16,7 @@ datasource db {
   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
-
+//role attribute gives users access to certain roles like admin
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -27,10 +29,10 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  //changing the name of the db table to 'users' instead of model name User with the @@map function
   @@map("users")
 }
-
+// for Gitub, Google and other providers login
 model Account {
   userId            String
   type              String
@@ -52,6 +54,7 @@ model Account {
   @@id([provider, providerAccountId])
   @@map("accounts")
 }
+//tells our server whether user is logged in
 
 model Session {
   sessionToken String   @unique
@@ -64,7 +67,7 @@ model Session {
 
   @@map("sessions")
 }
-
+//necessary for email login
 model VerificationToken {
   identifier String
   token      String
@@ -73,3 +76,6 @@ model VerificationToken {
   @@id([identifier, token])
   @@map("verification_tokens")
 }
+
+
+//when we want to add this schema to the database, when run npx prisma db push in terminal
